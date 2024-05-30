@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-callable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>GTEK</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="./js/plotly-2.27.0.min.js" charset="utf-8"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="./index.html">GTEK</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="./index.html">Domov</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./html/table.html">Tabuľka</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./html/cycle.html">Cykly</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./html/order.html">Rády prvkov</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <header>
+        <h1 class="text-center">Generovanie twisted Edwardsových kriviek</h1>
+    </header>
+
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h4 id="curveEquation" class="text-center">Rovnica: ax<sup>2</sup> + y<sup>2</sup> = 1 + dx<sup>2</sup>y<sup>2</sup> (mod p)</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <form id="paramForm" class="row justify-content-center">
+            <div class="col-sm-2">
+                <div class="inputDiv form-group">
+                    <label for="pInput">p:</label>
+                    <input type="number" id="pInput" name="pInput" class="form-control form-control-sm" required>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="inputDiv form-group">
+                    <label for="aInput">a:</label>
+                    <select id="aInput" name="aInput" class="form-control form-control-sm">
+
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="inputDiv form-group">
+                    <label for="dInput">d:</label>
+                    <select id="dInput" name="dInput" class="form-control form-control-sm">
+
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-12 mb-2">
+                <span class="error text-danger text-center d-block" id="pError"></span>
+            </div>
+            <div class="col-12 text-center">
+                <button id="graphBtn" type="button" class="btn btn-success">Zobraziť body</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h4 id="pointsDiv" class="text-center"></h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div id="graph"></div>
+            </div>
+            <div class="col-md-6 d-flex justify-content-center align-items-center">
+                <form id="addForm" class="w-100">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-3">
+                            <div class="inputDiv form-group">
+                                <label for="selectedPoint1X">Bod 1 (x):</label>
+                                <input type="number" id="selectedPoint1X" name="selectedPoint1X" class="form-control form-control-sm" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-3">
+                            <div class="inputDiv form-group">
+                                <label for="selectedPoint1Y">Bod 1 (y):</label>
+                                <input type="number" id="selectedPoint1Y" name="selectedPoint1Y" class="form-control form-control-sm" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-3">
+                            <div class="inputDiv form-group">
+                                <label for="selectedPoint2X">Bod 2 (x):</label>
+                                <input type="number" id="selectedPoint2X" name="selectedPoint2X" class="form-control form-control-sm" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-3">
+                            <div class="inputDiv form-group">
+                                <label for="selectedPoint2Y">Bod 2 (y):</label>
+                                <input type="number" id="selectedPoint2Y" name="selectedPoint2Y" class="form-control form-control-sm" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <span class="error text-danger text-center d-block" id="point1Error"></span>
+                        </div>
+                        <div class="col-sm-12 mb-2">
+                            <span class="error text-danger text-center d-block" id="point2Error"></span>
+                        </div>
+                        <div class="col-12 text-center mb-2">
+                            <button id="addBtn" type="button" class="btn btn-success">Sčítaj body</button>
+                        </div>
+                        <div class="col-sm-12 col-md-6 mb-2">
+                            <div class="inputDiv form-group">
+                                <label for="resultX">Výsledok (x):</label>
+                                <input type="number" id="resultX" name="resultX" class="form-control form-control-sm" readonly>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 mb-2">
+                            <div class="inputDiv form-group">
+                                <label for="resultY">Výsledok (y):</label>
+                                <input type="number" id="resultY" name="resultY" class="form-control form-control-sm" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="./js/curves.js" defer></script>
+    <script src="./js/common.js" defer></script>  
+    <script src="./js/addpoints.js" defer></script>  
+</body>
+</html>

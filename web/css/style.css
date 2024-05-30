@@ -1,0 +1,21 @@
+@font-face {
+    font-family: 'Audiowide-Regular';
+    src: url(../font/Audiowide-Regular.ttf);
+}
+
+body {
+    font-family: 'Audiowide-Regular';
+}
+
+#graph, #graphReal {
+    width: 600px;
+    height: 600px;
+    margin: 0 auto;
+}
+
+@media (max-width: 575.98px) {
+    #graph, #graphReal {
+        width: 350px;
+        height: 350px;
+    }
+}
